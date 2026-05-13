@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
-            $table->foreignId('order_milestone_id')->constrained('order_milestones')->nullable()->onDelete('set null');
+            $table->foreignId('order_milestone_id')->nullable()->constrained('order_milestones')->onDelete('set null');
             $table->unsignedInteger('amount');
             $table->enum('type', ['fixed', 'dp', 'milestone']);
             $table->string('method')->nullable();               // gateway, manual, crypto, dll
