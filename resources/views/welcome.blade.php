@@ -725,7 +725,7 @@
                 <div class="card-float card-float-3">
                     <div class="float-icon">💎</div>
                     <strong>Quality Guarantee</strong>
-                    <div style="font-size:12px">Free 2x revisi</div>
+                    <div style="font-size:12px">Free 5x revisi</div>
                 </div>
             </div>
         </div>
@@ -1013,7 +1013,7 @@
                 <div class="faq-list">
                     <div class="faq-item">
                         <div class="faq-question">Bagaimana jika hasil tidak sesuai (Revisi)? <span>+</span></div>
-                        <div class="faq-answer">Setiap pesanan memiliki jatah minimal 2x revisi gratis. Anda bisa
+                        <div class="faq-answer">Setiap pesanan memiliki jatah minimal 5x revisi gratis. Anda bisa
                             meminta perbaikan melalui fitur chat atau tombol revisi di dashboard sebelum menyetujui
                             pekerjaan.</div>
                     </div>
