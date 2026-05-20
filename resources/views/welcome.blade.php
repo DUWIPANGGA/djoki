@@ -5,9 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>D'JOKI — Premium IT Services Platform</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo.png') }}">
     <!-- Font Jakarta Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -139,6 +142,22 @@
             color: var(--text);
         }
 
+        .mobile-menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            padding: 8px;
+            z-index: 100;
+            outline: none;
+        }
+
+        .mobile-menu-toggle svg {
+            width: 28px;
+            height: 28px;
+        }
+
         .nav-links {
             display: flex;
             gap: 32px;
@@ -172,7 +191,7 @@
 
         .btn-primary {
             background: linear-gradient(135deg, #B79CED 0%, #9066E5 100%);
-            color: white;
+            color: rgb(255, 255, 255);
             box-shadow: 0 8px 20px rgba(183, 156, 237, 0.4);
         }
 
@@ -514,11 +533,55 @@
 
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 40px;
+                font-size: 36px;
+                letter-spacing: -1px;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
             }
 
             .navbar {
+                position: relative;
+                padding: 16px 0;
+            }
+
+            .nav-links {
+                display: none;
                 flex-direction: column;
+                position: absolute;
+                top: 72px;
+                left: 0;
+                right: 0;
+                background: rgba(15, 23, 42, 0.95);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 24px;
+                padding: 24px;
+                gap: 16px;
+                z-index: 99;
+                align-items: stretch;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                padding: 10px;
+                text-align: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+                width: 100%;
+            }
+
+            .nav-links a:last-child {
+                border-bottom: none;
+            }
+
+            .nav-links .btn {
+                width: 100%;
+                justify-content: center;
             }
 
             .hero-visual {
@@ -526,11 +589,30 @@
             }
 
             .container {
-                padding: 0 20px;
+                padding: 0 16px;
             }
 
             .section-title {
-                font-size: 32px;
+                font-size: 30px;
+            }
+
+            .hero {
+                padding: 40px 0;
+                gap: 24px;
+            }
+
+            .hero-badge {
+                margin-bottom: 16px;
+            }
+        }
+
+        .quick-order-form-container {
+            padding: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .quick-order-form-container {
+                padding: 32px;
             }
         }
 
@@ -563,8 +645,22 @@
     <div class="container">
         <!-- Navbar -->
         <nav class="navbar">
-            <a href="/" class="logo" style="text-decoration: none;">D'JOKI<span>.</span></a>
-            <div class="nav-links">
+            <a href="/" class="logo" style="text-decoration: none; display: flex; align-items: center;">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="D'JOKI Logo"
+                    style="
+                   height: 70px;
+                   width: auto;
+                   object-fit: contain;
+                   filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.281));
+                ">
+            </a>
+            <button id="mobile-menu-toggle" class="mobile-menu-toggle">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <div class="nav-links" id="nav-links">
                 <a href="#layanan">Layanan</a>
                 <a href="#trust">Trust</a>
                 <a href="{{ route('policy') }}">Policy</a>
@@ -573,8 +669,10 @@
                 @else
                     <a href="{{ route('login') }}" class="btn btn-outline btn-small">Login</a>
                 @endauth
-                <a href="{{ route('layanan.index') }}" class="btn btn-primary btn-small">Start Project</a>
-            </div>
+                <a href="{{ route('layanan.index') }}" class="btn btn-primary btn-small"
+                    style="color: #ffffff !important;">
+                    Start Project
+                </a>
         </nav>
 
         <!-- Hero Section -->
@@ -634,14 +732,15 @@
 
         <!-- Quick Order Shortcut -->
         <div class="quick-order-section" id="order-now" style="margin-bottom: 80px;">
-            <div class="glass p-8 md:p-12 rounded-[48px] border border-white/10 relative overflow-hidden">
+            <div
+                class="glass p-6 md:p-12 rounded-[32px] md:rounded-[48px] border border-white/10 relative overflow-hidden">
                 <div class="blob" style="top: -100px; right: -100px; opacity: 0.1;"></div>
                 <div class="blob" style="bottom: -100px; left: -100px; background: var(--glow-green); opacity: 0.1;">
                 </div>
 
                 <div
-                    style="display: flex; flex-wrap: wrap; gap: 48px; align-items: center; position: relative; z-index: 1;">
-                    <div style="flex: 1; min-width: 300px;">
+                    style="display: flex; flex-wrap: wrap; gap: 32px md:gap: 48px; align-items: center; position: relative; z-index: 1;">
+                    <div style="flex: 1; min-width: 260px; width: 100%;">
                         <div class="hero-badge"
                             style="background: rgba(163, 217, 119, 0.2); color: var(--secondary); border-color: rgba(163, 217, 119, 0.4);">
                             Fast Checkout
@@ -672,8 +771,8 @@
                         </div>
                     </div>
 
-                    <div
-                        style="flex: 1.2; min-width: 300px; background: rgba(15, 23, 42, 0.5); padding: 32px; border-radius: 32px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div class="quick-order-form-container"
+                        style="flex: 1.2; min-width: 260px; width: 100%; background: rgba(15, 23, 42, 0.5); border-radius: 24px; border: 1px solid rgba(255,255,255,0.05);">
                         <form action="{{ route('orders.create') }}" method="GET" class="space-y-4">
                             <div style="margin-bottom: 20px;">
                                 <label
@@ -724,10 +823,10 @@
         <div class="trust-badge" id="trust">
             <div class="badge-item">100% Confidential Project</div>
             <div class="badge-item">Avg. Response < 5 Minutes</div>
-            <div class="badge-item">Verified Providers</div>
-            <div class="badge-item">Secure Payment Gateway</div>
-            <div class="badge-item">Real-time Chat</div>
-        </div>
+                    <div class="badge-item">Verified Providers</div>
+                    <div class="badge-item">Secure</div>
+                    <div class="badge-item">Real-time Progress</div>
+            </div>
 
             <!-- Service Categories -->
             <div class="services" id="layanan">
@@ -736,60 +835,67 @@
                 <div class="section-sub">Pengerjaan cepat, rapi, dan hasil standar enterprise</div>
                 <div class="services-grid">
                     <div class="service-card">
-                        <div class="service-icon"></div>
+                        <div class="service-icon">
+                            <i class="fa-solid fa-globe"></i>
+                        </div>
                         <h3>Landing Page</h3>
                         <p>High-converting, modern design, responsive. 2-3 Days</p>
-                        <div style="margin-top:18px"><a href="{{ route('layanan.index') }}"
-                                class="btn btn-outline btn-small">Start From Rp350K</a></div>
                     </div>
+
                     <div class="service-card">
-                        <div class="service-icon"></div>
+                        <div class="service-icon">
+                            <i class="fa-solid fa-server"></i>
+                        </div>
                         <h3>Backend API</h3>
                         <p>Laravel, Node.js, database architecture. 5-7 Days</p>
-                        <div style="margin-top:18px"><a href="{{ route('layanan.index') }}"
-                                class="btn btn-outline btn-small">Negotiable</a></div>
                     </div>
+
                     <div class="service-card">
-                        <div class="service-icon"></div>
+                        <div class="service-icon">
+                            <i class="fa-solid fa-mobile-screen"></i>
+                        </div>
                         <h3>Mobile App</h3>
                         <p>Flutter, React Native, full support. 10-14 Days</p>
-                        <div style="margin-top:18px"><a href="{{ route('layanan.index') }}"
-                                class="btn btn-outline btn-small">Custom Quote</a></div>
                     </div>
+
                     <div class="service-card">
-                        <div class="service-icon"></div>
+                        <div class="service-icon">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                        </div>
                         <h3>Bug Fix & Maintenance</h3>
                         <p>Fast debugging, server maintenance. 1-2 Days</p>
-                        <div style="margin-top:18px"><a href="{{ route('layanan.index') }}"
-                                class="btn btn-outline btn-small">DP 30%</a></div>
                     </div>
+
                     <div class="service-card">
-                        <div class="service-icon"></div>
+                        <div class="service-icon">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
                         <h3>Joki Tugas IT</h3>
                         <p>Coding, paper, algorithm, assignment help. 2-4 Days</p>
-                        <div style="margin-top:18px"><a href="{{ route('layanan.index') }}"
-                                class="btn btn-outline btn-small">Mulai Rp150K</a></div>
                     </div>
+
                     <div class="service-card">
-                        <div class="service-icon"></div>
+                        <div class="service-icon">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
                         <h3>Joki Tugas Kilat</h3>
-                        <p>Express service for urgent deadlines. < 24 Hours</p>
-                        <div style="margin-top:18px"><a href="{{ route('layanan.index') }}"
-                                class="btn btn-outline btn-small">Express Price</a></div>
+                        <p>Express service for urgent deadlines. &lt; 24 Hours</p>
                     </div>
+
                     <div class="service-card">
-                        <div class="service-icon"></div>
+                        <div class="service-icon">
+                            <i class="fa-brands fa-figma"></i>
+                        </div>
                         <h3>UI/UX (Figma)</h3>
                         <p>Prototyping, high-fidelity design, assets. 3-5 Days</p>
-                        <div style="margin-top:18px"><a href="{{ route('layanan.index') }}"
-                                class="btn btn-outline btn-small">Negotiable</a></div>
                     </div>
+
                     <div class="service-card">
-                        <div class="service-icon"></div>
+                        <div class="service-icon">
+                            <i class="fa-solid fa-database"></i>
+                        </div>
                         <h3>Database Architecture</h3>
                         <p>Optimization, SQL/NoSQL, normalization. 4-6 Days</p>
-                        <div style="margin-top:18px"><a href="{{ route('layanan.index') }}"
-                                class="btn btn-outline btn-small">Start Rp500K</a></div>
                     </div>
                 </div>
             </div>
@@ -802,7 +908,8 @@
                     <div class="why-card">
                         <div class="why-emoji"></div>
                         <h3>Privacy Guaranteed</h3>
-                        <p>Identitas Anda anonim. Tidak ada yang akan tahu Anda menggunakan jasa kami. Data & file dijamin aman.</p>
+                        <p>Identitas Anda anonim. Tidak ada yang akan tahu Anda menggunakan jasa kami. Data & file
+                            dijamin aman.</p>
                     </div>
                     <div class="why-card">
                         <div class="why-emoji"></div>
@@ -840,7 +947,7 @@
                 <div class="flex-cards">
                     <div class="pricing-card">
                         <h3>Fixed Price</h3>
-                        <div class="price">Mulai Rp250K</div>
+                        <div class="price">Mulai Rp30K</div>
                         <p>Langsung checkout, estimasi tetap, tanpa drama</p>
                         <a href="{{ route('layanan.index') }}" class="btn btn-outline"
                             style="margin-top:16px;">Pilih Layanan</a>
@@ -906,15 +1013,21 @@
                 <div class="faq-list">
                     <div class="faq-item">
                         <div class="faq-question">Bagaimana jika hasil tidak sesuai (Revisi)? <span>+</span></div>
-                        <div class="faq-answer">Setiap pesanan memiliki jatah minimal 2x revisi gratis. Anda bisa meminta perbaikan melalui fitur chat atau tombol revisi di dashboard sebelum menyetujui pekerjaan.</div>
+                        <div class="faq-answer">Setiap pesanan memiliki jatah minimal 2x revisi gratis. Anda bisa
+                            meminta perbaikan melalui fitur chat atau tombol revisi di dashboard sebelum menyetujui
+                            pekerjaan.</div>
                     </div>
                     <div class="faq-item">
                         <div class="faq-question">Bagaimana sistem persetujuan & masa sanggah? <span>+</span></div>
-                        <div class="faq-answer">Setelah provider mengirim hasil akhir, Anda memiliki waktu 48 jam (Masa Sanggah) untuk memeriksa hasil. Jika dalam 48 jam tidak ada komplain, sistem akan otomatis menganggap pesanan selesai dan melepaskan dana.</div>
+                        <div class="faq-answer">Setelah provider mengirim hasil akhir, Anda memiliki waktu 48 jam (Masa
+                            Sanggah) untuk memeriksa hasil. Jika dalam 48 jam tidak ada komplain, sistem akan otomatis
+                            menganggap pesanan selesai dan melepaskan dana.</div>
                     </div>
                     <div class="faq-item">
                         <div class="faq-question">Apakah kerahasiaan saya terjamin? <span>+</span></div>
-                        <div class="faq-answer">Sangat terjamin. Kami mengutamakan privasi penuh sehingga tidak ada pihak luar yang akan tahu Anda menggunakan jasa D'JOKI. File dienkripsi dan provider terikat kontrak kerahasiaan ketat.</div>
+                        <div class="faq-answer">Sangat terjamin. Kami mengutamakan privasi penuh sehingga tidak ada
+                            pihak luar yang akan tahu Anda menggunakan jasa D'JOKI. File dienkripsi dan provider terikat
+                            kontrak kerahasiaan ketat.</div>
                     </div>
                     <div class="faq-item">
                         <div class="faq-question">Berapa lama estimasi pengerjaan?<span>+</span></div>
@@ -923,7 +1036,8 @@
                     </div>
                     <div class="faq-item">
                         <div class="faq-question">Bagaimana metode pembayaran?<span>+</span></div>
-                        <div class="faq-answer">Pembayaran dilakukan via transfer bank atau e-wallet (QRIS) secara aman setelah detail project disepakati.</div>
+                        <div class="faq-answer">Pembayaran dilakukan via transfer bank atau e-wallet (QRIS) secara aman
+                            setelah detail project disepakati.</div>
                     </div>
                     <div class="faq-item">
                         <div class="faq-question">Apakah provider benar-benar terverifikasi?<span>+</span></div>
@@ -950,14 +1064,50 @@
             <footer>
                 <p>© 2025 D'JOKI — Premium IT Services Marketplace. Privacy Guaranteed.</p>
                 <div style="margin-top: 12px; display: flex; gap: 24px; justify-content: center;">
-                    <a href="{{ route('policy') }}#privacy" style="color: inherit; text-decoration: none;">Kebijakan Privasi</a>
-                    <a href="{{ route('policy') }}#terms" style="color: inherit; text-decoration: none;">Ketentuan Layanan</a>
-                    <a href="{{ route('policy') }}#trust" style="color: inherit; text-decoration: none;">Trust & Safety</a>
+                    <a href="{{ route('policy') }}#privacy" style="color: inherit; text-decoration: none;">Kebijakan
+                        Privasi</a>
+                    <a href="{{ route('policy') }}#terms" style="color: inherit; text-decoration: none;">Ketentuan
+                        Layanan</a>
+                    <a href="{{ route('policy') }}#trust" style="color: inherit; text-decoration: none;">Trust &
+                        Safety</a>
                 </div>
             </footer>
         </div>
 
         <script>
+            // mobile menu toggle
+            const menuToggle = document.getElementById('mobile-menu-toggle');
+            const navLinks = document.getElementById('nav-links');
+            const menuIcon = document.getElementById('menu-icon');
+
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    navLinks.classList.toggle('active');
+                    if (navLinks.classList.contains('active')) {
+                        menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+                    } else {
+                        menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+                    }
+                });
+
+                // Close menu when click happens outside
+                document.addEventListener('click', (e) => {
+                    if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+                        navLinks.classList.remove('active');
+                        menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+                    }
+                });
+
+                // Close menu when link is clicked
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navLinks.classList.remove('active');
+                        menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+                    });
+                });
+            }
+
             // faq accordion
             document.querySelectorAll('.faq-item').forEach(item => {
                 const questionDiv = item.querySelector('.faq-question');

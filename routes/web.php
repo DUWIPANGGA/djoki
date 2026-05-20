@@ -67,8 +67,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('orders/{order}/review', [ReviewController::class, 'store'])->name('reviews.store');
     Route::post('reviews/{review}/reply', [ReviewController::class, 'reply'])->name('reviews.reply');
 
-    // Revisions
-    Route::resource('revisions', RevisionController::class)->only(['store', 'update']);
+    // Revisions (nested under orders)
+    Route::post('orders/{order}/revisions', [RevisionController::class, 'store'])->name('orders.revisions.store');
+    Route::put('revisions/{revision}', [RevisionController::class, 'update'])->name('revisions.update');
 
     // Portfolios
     Route::resource('portfolios', PortfolioController::class);

@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Policy & Persyaratan — D'JOKI</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo.png') }}">
     <!-- Font Jakarta Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -71,6 +73,14 @@
 
         .btn-back:hover {
             color: var(--primary);
+        }
+
+        .back-text-short {
+            display: none;
+        }
+
+        .back-text-full {
+            display: inline;
         }
 
         h1 {
@@ -154,14 +164,77 @@
             color: var(--muted);
             font-size: 14px;
         }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 16px;
+            }
+
+            .navbar {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 40px;
+                width: 100%;
+            }
+
+            .back-text-full {
+                display: none;
+            }
+
+            .back-text-short {
+                display: inline;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            h3 {
+                font-size: 18px;
+                margin-top: 24px;
+            }
+
+            .section-nav {
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 12px;
+                margin-bottom: 32px;
+                gap: 16px;
+            }
+
+            .section-nav::-webkit-scrollbar {
+                height: 4px;
+            }
+
+            .section-nav::-webkit-scrollbar-thumb {
+                background: var(--border);
+                border-radius: 4px;
+            }
+
+            .highlight-box {
+                padding: 16px;
+                margin: 24px 0;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <nav class="navbar">
-            <a href="/" class="logo">D'JOKI<span>.</span></a>
-            <a href="/" class="btn-back">← Kembali ke Beranda</a>
+            <a href="/" class="logo" style="display: flex; align-items: center;">
+                <img src="{{ asset('assets/img/logo_text.png') }}" alt="D'JOKI Logo" style="height: 28px; width: auto; object-fit: contain;">
+            </a>
+            <a href="/" class="btn-back">
+                <span class="back-text-full">← Kembali ke Beranda</span>
+                <span class="back-text-short">← Beranda</span>
+            </a>
         </nav>
 
         <header>

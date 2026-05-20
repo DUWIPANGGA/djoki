@@ -11,6 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo.png') }}">
 </head>
 <body class="antialiased bg-[#0f172a] min-h-screen flex items-center justify-center p-6">
     <div class="absolute inset-0 z-0 overflow-hidden">
@@ -19,7 +22,9 @@
 
     <div class="w-full max-w-lg relative z-10">
         <div class="text-center mb-8">
-            <a href="/" class="text-3xl font-bold text-gradient inline-block mb-2">D'JOKI</a>
+            <a href="/" class="inline-flex items-center mb-4">
+                <img src="{{ asset('assets/img/logo_text.png') }}" alt="D'JOKI Logo" class="h-12 w-auto object-contain">
+            </a>
             <p class="text-slate-400">Bergabunglah dengan komunitas IT joki terbaik.</p>
         </div>
 

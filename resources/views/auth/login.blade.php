@@ -14,6 +14,9 @@
     <!-- CSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo.png') }}">
+
     <style>
         body {
             font-family: 'Outfit', sans-serif;
@@ -107,7 +110,9 @@
 
     <div class="w-full max-w-md relative z-10">
         <div class="text-center mb-8">
-            <a href="/" class="text-3xl font-bold text-gradient inline-block mb-2">D'JOKI</a>
+            <a href="/" class="inline-flex items-center mb-4">
+                <img src="{{ asset('assets/img/logo_text.png') }}" alt="D'JOKI Logo" class="h-12 w-auto object-contain">
+            </a>
             <p class="text-slate-400">Selamat datang kembali! Silahkan masuk ke akun Anda.</p>
         </div>
 

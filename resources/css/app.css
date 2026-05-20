@@ -45,3 +45,27 @@
     animation: float 6s ease-in-out infinite;
 }
 
+.page-loader {
+    @apply fixed inset-0 z-[9999] flex items-center justify-center bg-[#0f172a] transition-opacity duration-300 ease-out;
+}
+
+.page-loader.is-hidden {
+    @apply opacity-0 pointer-events-none;
+}
+
+.page-loader__inner {
+    @apply flex flex-col items-center gap-4 text-center px-6;
+}
+
+.page-loader__spinner {
+    @apply h-12 w-12 rounded-full border-2 border-white/10 border-t-indigo-500 animate-spin;
+}
+
+.page-loader__brand {
+    @apply text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400;
+}
+
+.page-loader__text {
+    @apply text-sm text-slate-400;
+}
+

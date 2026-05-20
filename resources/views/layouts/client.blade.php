@@ -35,20 +35,23 @@
             -webkit-text-fill-color: transparent;
         }
     </style>
+    @include('layouts.partials.critical-styles')
 </head>
 <body class="bg-[#0f172a] text-slate-200 min-h-screen">
-    <div class="flex flex-col lg:flex-row min-h-screen">
+    @include('layouts.partials.page-loader')
+
+    <div class="flex min-h-screen w-full">
         <!-- Sidebar Backdrop (mobile & tablet) -->
-        <div id="sidebar-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden lg:hidden" aria-hidden="true"></div>
+        <div id="sidebar-backdrop" aria-hidden="true"></div>
 
         <!-- Sidebar -->
-        <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 max-w-[85vw] h-screen border-r border-white/5 bg-[#0f172a]/95 backdrop-blur-xl z-50 flex flex-col transform -translate-x-full transition-transform duration-300 ease-out lg:translate-x-0 lg:static lg:max-w-none lg:sticky lg:top-0 lg:bg-[#0f172a]/50">
+        <aside id="sidebar" class="flex flex-col border-r border-white/5 bg-[#0f172a]">
             <div class="p-6 lg:p-8 flex justify-between items-center shrink-0">
                 <div>
                     <a href="/" class="text-3xl font-bold text-gradient">D'JOKI</a>
                     <p class="text-[10px] uppercase tracking-widest text-slate-500 mt-1">Client Area</p>
                 </div>
-                <button type="button" id="sidebar-close" class="p-2 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white lg:hidden transition" aria-label="Tutup menu">
+                <button type="button" id="sidebar-close" class="p-2 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white transition" aria-label="Tutup menu">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -117,13 +120,13 @@
                     </form>
                 </div>
             </div>
-        </aside>
+        </aside>    
 
         <!-- Main Content -->
         <main class="flex-1 w-full min-w-0 p-4 sm:p-6 lg:p-8">
             <header class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-4">
                 <div class="flex items-center gap-3 min-w-0 flex-1">
-                    <button type="button" id="sidebar-toggle" class="p-2.5 rounded-xl bg-white/5 border border-white/10 text-slate-300 hover:text-white lg:hidden transition active:scale-95 shrink-0" aria-label="Buka menu" aria-expanded="false" aria-controls="sidebar">
+                    <button type="button" id="sidebar-toggle" class="p-2.5 rounded-xl bg-white/5 border border-white/10 text-slate-300 hover:text-white transition active:scale-95 shrink-0" aria-label="Buka menu" aria-expanded="false" aria-controls="sidebar">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -163,5 +166,6 @@
         </main>
     </div>
 
+    @include('layouts.partials.app-scripts')
 </body>
 </html>

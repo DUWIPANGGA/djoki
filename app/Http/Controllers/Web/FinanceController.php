@@ -48,9 +48,10 @@ class FinanceController extends Controller
                     'provider_payment_proof_path' => $path,
                 ]);
 
-                // Increment provider earnings
+                // Increment provider earnings (Net after 12% platform fee)
                 $provider = $order->provider;
-                $provider->increment('total_earnings', $order->total_price);
+                $netEarnings = $order->total_price * 0.88;
+                $provider->increment('total_earnings', $netEarnings);
             });
 
             return back()->with('success', 'Pembayaran ke provider berhasil dicatat, bukti diunggah, dan penghasilan provider diperbarui.');

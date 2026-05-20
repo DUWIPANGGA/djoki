@@ -94,7 +94,11 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        $order->load(['client', 'provider', 'service', 'milestones', 'files', 'messages.user', 'review', 'payments']);
+        $order->load(['client', 'provider', 'service', 'milestones', 'files', 'messages.user', 'review', 'payments', 'revisions.requester', 'trackingLogs.changer']);
+
+        // Pisahkan file client (brief/lampiran) dan file provider (hasil kerja)
+        $clientFiles   = $order->files->where('file_type', 'client');
+        $providerFiles = $order->files->where('file_type', 'provider');
 
         $providers = [];
         if (auth()->user()->role === 'admin') {
@@ -106,7 +110,7 @@ class OrderController extends Controller
             $paymentMethods = \App\Models\PaymentMethod::where('is_active', true)->get();
         }
 
-        return view('djoki.orders.show', compact('order', 'providers', 'paymentMethods'));
+        return view('djoki.orders.show', compact('order', 'providers', 'paymentMethods', 'clientFiles', 'providerFiles'));
     }
 
     public function edit(Order $order)
@@ -161,15 +165,19 @@ class OrderController extends Controller
         $file = $request->file('file');
         $hash = hash_file('sha256', $file->getPathname());
         $path = $file->store("orders/{$order->id}", 'private');
-        
+
+        // Tentukan tipe file berdasarkan role uploader
+        $fileType = (auth()->user()->role === 'provider') ? 'provider' : 'client';
+
         $order->files()->create([
-            'uploaded_by' => auth()->id(),
-            'file_name' => $file->getClientOriginalName(),
-            'file_path' => $path,
-            'file_hash' => $hash,
-            'mime_type' => $file->getMimeType(),
-            'size' => $file->getSize(),
-            'access_token' => bin2hex(random_bytes(32)),
+            'uploaded_by'      => auth()->id(),
+            'file_type'        => $fileType,
+            'file_name'        => $file->getClientOriginalName(),
+            'file_path'        => $path,
+            'file_hash'        => $hash,
+            'mime_type'        => $file->getMimeType(),
+            'size'             => $file->getSize(),
+            'access_token'     => bin2hex(random_bytes(32)),
             'token_expires_at' => now()->addDays(7),
         ]);
 

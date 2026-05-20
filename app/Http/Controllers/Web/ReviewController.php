@@ -15,10 +15,15 @@ class ReviewController extends Controller
         if ($request->user()->id !== $order->client_id) {
             abort(403);
         }
-        if ($order->status !== 'completed') {
-            return back()->with('error', 'Order belum selesai.');
+
+        if (!in_array($order->status, ['in_progress', 'completed'])) {
+            return back()->with('error', 'Order belum bisa diselesaikan atau di-review pada tahap ini.');
         }
 
+        // Auto-complete the order if the client submits a review while it's in_progress
+        if ($order->status !== 'completed') {
+            $order->update(['status' => 'completed', 'completed_at' => now()]);
+        }
         $validated = $request->validate([
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'nullable|string',

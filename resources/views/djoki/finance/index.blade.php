@@ -80,6 +80,7 @@
                         <th class="p-4 font-bold">Layanan</th>
                         <th class="p-4 font-bold">Status Pesanan</th>
                         <th class="p-4 font-bold">Status Payout</th>
+                        <th class="p-4 font-bold">Net Payout</th>
                         <th class="p-4 font-bold text-center">Aksi (Upload Bukti)</th>
                     </tr>
                 </thead>
@@ -105,6 +106,9 @@
                                 {{ $order->provider_payment_status === 'paid' ? 'Lunas' : 'Menunggu' }}
                             </span>
                         </td>
+                        <td class="p-4 font-bold text-green-400 whitespace-nowrap">
+                            Rp {{ number_format(($order->total_price ?? 0) * 0.88, 0, ',', '.') }}
+                        </td>
                         <td class="p-4 align-middle text-center">
                             @if($order->provider_payment_status !== 'paid')
                                 <form action="{{ route('finance.pay', $order) }}" method="POST" enctype="multipart/form-data" class="flex flex-col items-center space-y-2">
@@ -124,7 +128,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="p-8 text-center text-slate-500 italic">Belum ada project untuk payout.</td>
+                        <td colspan="6" class="p-8 text-center text-slate-500 italic">Belum ada project untuk payout.</td>
                     </tr>
                     @endforelse
                 </tbody>

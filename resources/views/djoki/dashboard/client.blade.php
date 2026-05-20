@@ -42,67 +42,33 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div class="lg:col-span-2 glass rounded-3xl overflow-hidden">
-            <div class="p-6 border-b border-white/5 flex justify-between items-center">
+        <div class="lg:col-span-2 glass rounded-3xl p-6">
+            <div class="flex justify-between items-center mb-5">
                 <h3 class="font-bold text-white">Pesanan Saya</h3>
-                <a href="{{ route('orders.index') }}" class="text-xs text-blue-400 hover:underline">Lihat Semua</a>
+                <a href="{{ route('orders.index') }}" class="text-xs text-indigo-400 hover:underline font-semibold">Lihat Semua</a>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm">
-                    <thead>
-                        <tr class="text-slate-500 bg-white/5">
-                            <th class="px-6 py-4 font-semibold">ID</th>
-                            <th class="px-6 py-4 font-semibold">Layanan</th>
-                            <th class="px-6 py-4 font-semibold">Total</th>
-                            <th class="px-6 py-4 font-semibold">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-white/5">
-                        @forelse($data['recent_orders'] ?? [] as $order)
-                            <tr class="hover:bg-white/[0.02] transition">
-                                <td class="px-6 py-4 font-mono text-xs text-slate-400">
-                                    #{{ substr($order->order_number, 0, 8) }}</td>
-                                <td class="px-6 py-4 text-white font-medium">{{ $order->service->name ?? 'Custom Service' }}
-                                </td>
-                                <td class="px-6 py-4 text-white font-semibold">Rp
-                                    {{ number_format($order->total_price, 0, ',', '.') }}</td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider
-                                {{ $order->status === 'completed'
-                                    ? 'bg-green-500/10 text-green-400'
-                                    : ($order->status === 'pending'
-                                        ? 'bg-yellow-500/10 text-yellow-400'
-                                        : 'bg-blue-500/10 text-blue-400') }}">
-                                        {{ $order->status }}
-                                    </span>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="px-6 py-8 text-center text-slate-500 italic">Anda belum memiliki
-                                    pesanan.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+            @if(count($data['recent_orders'] ?? []) > 0)
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    @foreach($data['recent_orders'] as $order)
+                        <x-order-card-compact :order="$order" accent="indigo" />
+                    @endforeach
+                </div>
+            @else
+                <p class="text-center text-slate-500 italic py-8">Anda belum memiliki pesanan.</p>
+            @endif
         </div>
 
         <div class="glass rounded-3xl p-6 flex flex-col h-full max-h-[500px]">
             <h3 class="font-bold text-white mb-6">Cari Layanan Joki IT</h3>
-            
-            <div class="space-y-4 overflow-y-auto pr-2 custom-scrollbar flex-1 mb-4">
+
+            <div class="space-y-4 overflow-y-auto pr-2 flex-1 mb-4">
                 @forelse($data['services'] ?? [] as $service)
-                    <div class="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-blue-500/50 transition group">
-                        <div class="flex justify-between items-start mb-2">
-                            <h4 class="text-sm font-bold text-white group-hover:text-blue-400 transition">{{ $service->name }}</h4>
-                        </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-indigo-500/50 transition group">
+                        <h4 class="text-sm font-bold text-white group-hover:text-indigo-400 transition mb-2">{{ $service->name }}</h4>
                         <span class="text-[10px] font-semibold text-green-400 bg-green-500/10 px-2 py-1 rounded-lg mb-2 inline-block">Mulai Rp {{ number_format($service->min_price, 0, ',', '.') }}</span>
                         <p class="text-xs text-slate-400 mb-4 line-clamp-2">{{ $service->description }}</p>
-                        
                         <a href="{{ route('orders.create', ['service_id' => $service->id]) }}"
-                            class="w-full inline-flex justify-center items-center px-4 py-2 bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white text-xs font-bold rounded-xl transition border border-blue-500/30 hover:border-transparent">
+                            class="w-full inline-flex justify-center items-center px-4 py-2 bg-indigo-600/20 hover:bg-indigo-600 text-indigo-400 hover:text-white text-xs font-bold rounded-xl transition border border-indigo-500/30 hover:border-transparent">
                             Pesan Sekarang
                         </a>
                     </div>
@@ -110,7 +76,7 @@
                     <p class="text-xs text-slate-500 text-center py-4">Belum ada layanan tersedia.</p>
                 @endforelse
             </div>
-            
+
             <div class="pt-4 border-t border-white/10 mt-auto">
                 <a href="{{ route('orders.create') }}"
                     class="w-full inline-flex justify-center items-center px-4 py-3 bg-white/5 hover:bg-white/10 text-white text-xs font-bold rounded-2xl transition border border-white/10">

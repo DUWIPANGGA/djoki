@@ -10,9 +10,21 @@ class OrderFile extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'order_id', 'uploaded_by', 'file_name', 'file_path', 'file_hash',
+        'order_id', 'uploaded_by', 'file_type', 'file_name', 'file_path', 'file_hash',
         'mime_type', 'size', 'access_token', 'token_expires_at', 'is_encrypted',
     ];
+
+    // Scope: file hasil kerja dari provider
+    public function scopeProviderFiles($query)
+    {
+        return $query->where('file_type', 'provider');
+    }
+
+    // Scope: file lampiran dari client
+    public function scopeClientFiles($query)
+    {
+        return $query->where('file_type', 'client');
+    }
 
     protected $casts = [
         'token_expires_at' => 'datetime',
