@@ -37,15 +37,25 @@
     </style>
 </head>
 <body class="bg-[#0f172a] text-slate-200 min-h-screen">
-    <div class="flex">
+    <div class="flex flex-col lg:flex-row min-h-screen">
+        <!-- Sidebar Backdrop (mobile & tablet) -->
+        <div id="sidebar-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden lg:hidden" aria-hidden="true"></div>
+
         <!-- Sidebar -->
-        <aside class="w-72 h-screen sticky top-0 border-r border-white/5 bg-[#0f172a]/50 backdrop-blur-xl z-50 flex flex-col">
-            <div class="p-8">
-                <a href="/" class="text-3xl font-bold text-gradient">D'JOKI</a>
-                <p class="text-[10px] uppercase tracking-widest text-slate-500 mt-1">Client Area</p>
+        <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 max-w-[85vw] h-screen border-r border-white/5 bg-[#0f172a]/95 backdrop-blur-xl z-50 flex flex-col transform -translate-x-full transition-transform duration-300 ease-out lg:translate-x-0 lg:static lg:max-w-none lg:sticky lg:top-0 lg:bg-[#0f172a]/50">
+            <div class="p-6 lg:p-8 flex justify-between items-center shrink-0">
+                <div>
+                    <a href="/" class="text-3xl font-bold text-gradient">D'JOKI</a>
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 mt-1">Client Area</p>
+                </div>
+                <button type="button" id="sidebar-close" class="p-2 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white lg:hidden transition" aria-label="Tutup menu">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
 
-            <nav class="flex-1 px-4 space-y-1">
+            <nav class="flex-1 px-4 space-y-1 overflow-y-auto">
                 <p class="px-4 text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-2 mt-4">Aktivitas</p>
                 
                 <a href="{{ route('dashboard') }}" class="sidebar-item group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition {{ request()->routeIs('dashboard') ? 'sidebar-item-active' : '' }}">
@@ -110,15 +120,22 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 p-8">
-            <header class="flex justify-between items-center mb-8">
-                <div>
-                    <h1 class="text-2xl font-bold text-white">@yield('header', 'Overview')</h1>
-                    <p class="text-slate-400 text-sm">@yield('subheader', 'Apa yang bisa kami bantu hari ini?')</p>
+        <main class="flex-1 w-full min-w-0 p-4 sm:p-6 lg:p-8">
+            <header class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-4">
+                <div class="flex items-center gap-3 min-w-0 flex-1">
+                    <button type="button" id="sidebar-toggle" class="p-2.5 rounded-xl bg-white/5 border border-white/10 text-slate-300 hover:text-white lg:hidden transition active:scale-95 shrink-0" aria-label="Buka menu" aria-expanded="false" aria-controls="sidebar">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    <div class="min-w-0">
+                        <h1 class="text-xl sm:text-2xl font-bold text-white truncate">@yield('header', 'Overview')</h1>
+                        <p class="text-slate-400 text-xs sm:text-sm truncate">@yield('subheader', 'Apa yang bisa kami bantu hari ini?')</p>
+                    </div>
                 </div>
                 
-                <div class="flex items-center space-x-4">
-                    <a href="{{ route('orders.create') }}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition shadow-lg shadow-indigo-600/20">
+                <div class="flex items-center gap-3 shrink-0 self-start sm:self-auto">
+                    <a href="{{ route('orders.create') }}" class="px-3 py-2 sm:px-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition shadow-lg shadow-indigo-600/20 whitespace-nowrap">
                         Pesan Baru
                     </a>
                 </div>
@@ -145,5 +162,6 @@
             @yield('content')
         </main>
     </div>
+
 </body>
 </html>
