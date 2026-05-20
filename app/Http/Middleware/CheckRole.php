@@ -13,10 +13,13 @@ class CheckRole
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle($request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if ($request->user()->role !== $role) {
-            return response()->json(['message' => 'Forbidden'], 403);
+        if (!$request->user() || !in_array($request->user()->role, $roles)) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Forbidden'], 403);
+            }
+            abort(403, 'Akses ditolak. Anda tidak memiliki izin untuk halaman ini.');
         }
 
         return $next($request);

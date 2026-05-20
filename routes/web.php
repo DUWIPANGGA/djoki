@@ -33,65 +33,68 @@ Route::get('auth/{provider}/callback', [SocialAuthController::class, 'handleProv
 Route::post('auth/firebase/google', [SocialAuthController::class, 'handleFirebaseLogin'])->name('auth.firebase.google');
 
 Route::middleware(['auth'])->group(function () {
-    // Dashboard
+    // ----------------------------------------------------
+    // ALL AUTHENTICATED USERS
+    // ----------------------------------------------------
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    // User Management (Admin Only)
-    Route::resource('users', UserController::class);
-
-    // Service Categories
-    Route::resource('service-categories', ServiceCategoryController::class);
-
-    // Payment Methods (Master Data)
-    Route::resource('payment-methods', PaymentMethodController::class);
-
-    // Services
-    Route::resource('services', ServiceController::class);
-
-    // Provider Services
-    Route::resource('provider-services', ProviderServiceController::class);
-
-    // Client Services Listing
-    Route::get('layanan', [LayananController::class, 'index'])->name('layanan.index');
-
-    // Orders
-    Route::resource('orders', OrderController::class);
-    Route::post('orders/{order}/files', [OrderController::class, 'uploadFile'])->name('orders.files.upload');
-    Route::get('orders/{order}/files/{file}/download', [OrderController::class, 'download'])->name('orders.download');
-
-    // Messages
-    Route::get('orders/{order}/messages', [MessageController::class, 'index'])->name('orders.messages.index');
-    Route::post('orders/{order}/messages', [MessageController::class, 'store'])->name('orders.messages.store');
-
-    // Reviews
-    Route::post('orders/{order}/review', [ReviewController::class, 'store'])->name('reviews.store');
-    Route::post('reviews/{review}/reply', [ReviewController::class, 'reply'])->name('reviews.reply');
-
-    // Revisions (nested under orders)
-    Route::post('orders/{order}/revisions', [RevisionController::class, 'store'])->name('orders.revisions.store');
-    Route::put('revisions/{revision}', [RevisionController::class, 'update'])->name('revisions.update');
-
-    // Portfolios
-    Route::resource('portfolios', PortfolioController::class);
-
-    // Payments
-    Route::post('orders/{order}/payments', [PaymentController::class, 'store'])->name('payments.store');
-    Route::post('payments/{payment}/confirm', [PaymentController::class, 'confirm'])->name('payments.confirm');
-
-    // Verification Documents
-    Route::resource('verification-documents', VerificationDocumentController::class);
-    Route::put('verification-documents/{document}/status', [VerificationDocumentController::class, 'updateStatus'])->name('verification-documents.status');
-
-    // Privacy Settings
     Route::get('privacy-settings', [PrivacySettingController::class, 'edit'])->name('privacy-settings.edit');
     Route::put('privacy-settings', [PrivacySettingController::class, 'update'])->name('privacy-settings.update');
 
-    // Finance (Admin Only)
-    Route::get('finance', [\App\Http\Controllers\Web\FinanceController::class, 'index'])->name('finance.index');
-    Route::post('finance/{order}/pay', [\App\Http\Controllers\Web\FinanceController::class, 'pay'])->name('finance.pay');
+    // Orders & Messages (Akses dibatasi spesifik di Controller)
+    Route::resource('orders', OrderController::class);
+    Route::post('orders/{order}/files', [OrderController::class, 'uploadFile'])->name('orders.files.upload');
+    Route::get('orders/{order}/files/{file}/download', [OrderController::class, 'download'])->name('orders.download');
+    Route::get('orders/{order}/messages', [MessageController::class, 'index'])->name('orders.messages.index');
+    Route::post('orders/{order}/messages', [MessageController::class, 'store'])->name('orders.messages.store');
 
-    // Finance (Provider Only)
-    Route::get('provider/finance', [\App\Http\Controllers\Web\FinanceController::class, 'providerIndex'])->name('provider.finance.index');
+
+    // ----------------------------------------------------
+    // ADMIN ONLY
+    // ----------------------------------------------------
+    Route::middleware(['role:admin'])->group(function () {
+        Route::resource('users', UserController::class);
+        Route::resource('service-categories', ServiceCategoryController::class);
+        Route::resource('payment-methods', PaymentMethodController::class);
+        Route::resource('services', ServiceController::class);
+        
+        Route::get('finance', [\App\Http\Controllers\Web\FinanceController::class, 'index'])->name('finance.index');
+        Route::post('finance/{order}/pay', [\App\Http\Controllers\Web\FinanceController::class, 'pay'])->name('finance.pay');
+        Route::post('payments/{payment}/confirm', [PaymentController::class, 'confirm'])->name('payments.confirm');
+        
+        Route::put('verification-documents/{document}/status', [VerificationDocumentController::class, 'updateStatus'])->name('verification-documents.status');
+    });
+
+
+    // ----------------------------------------------------
+    // PROVIDER ONLY
+    // ----------------------------------------------------
+    Route::middleware(['role:provider'])->group(function () {
+        Route::resource('provider-services', ProviderServiceController::class);
+        Route::resource('portfolios', PortfolioController::class);
+        
+        Route::get('provider/finance', [\App\Http\Controllers\Web\FinanceController::class, 'providerIndex'])->name('provider.finance.index');
+        Route::post('reviews/{review}/reply', [ReviewController::class, 'reply'])->name('reviews.reply');
+        Route::put('revisions/{revision}', [RevisionController::class, 'update'])->name('revisions.update');
+    });
+
+
+    // ----------------------------------------------------
+    // CLIENT ONLY
+    // ----------------------------------------------------
+    Route::middleware(['role:client'])->group(function () {
+        Route::get('layanan', [LayananController::class, 'index'])->name('layanan.index');
+        Route::post('orders/{order}/review', [ReviewController::class, 'store'])->name('reviews.store');
+        Route::post('orders/{order}/revisions', [RevisionController::class, 'store'])->name('orders.revisions.store');
+        Route::post('orders/{order}/payments', [PaymentController::class, 'store'])->name('payments.store');
+    });
+
+
+    // ----------------------------------------------------
+    // ADMIN & PROVIDER
+    // ----------------------------------------------------
+    Route::middleware(['role:admin,provider'])->group(function () {
+        Route::resource('verification-documents', VerificationDocumentController::class)->except(['updateStatus']);
+    });
 });
 
 // Auth routes
